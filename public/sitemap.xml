@@ -1,13 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- 1. الرئيسية -->
   <url>
     <loc>https://www.emirates-report.com/</loc>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
+  
+  <!-- 2. من نحن -->
+  <url>
+    <loc>https://www.emirates-report.com/about</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- 3. كيف تعمل المنصة -->
+  <url>
+    <loc>https://www.emirates-report.com/how-it-works</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- 4. الأسئلة الشائعة -->
   <url>
     <loc>https://www.emirates-report.com/faq</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- 5. تواصل معنا -->
+  <url>
+    <loc>https://www.emirates-report.com/contact</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- 6. الخصوصية -->
+  <url>
+    <loc>https://www.emirates-report.com/privacy</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <!-- 7. الشروط والأنظمة -->
+  <url>
+    <loc>https://www.emirates-report.com/terms</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
   </url>
 </urlset>
