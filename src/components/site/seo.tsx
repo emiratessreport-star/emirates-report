@@ -44,7 +44,7 @@ export function buildHead({
     { property: "og:type", content: type },
     { property: "og:url", content: fullUrl },
     { property: "og:image", content: ogImage },
-    { property: "og:site_name", content: "منصة التقرير الإماراتي" },
+    { property: "og:site_name", content: "منصة شكاوى المستهلك" },
 
     // Twitter / X Tags
     { name: "twitter:card", content: "summary_large_image" },

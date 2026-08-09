@@ -1,4 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useRouterState } from "@tanstack/react-router";
+import { useEffect } from "react";
 import {
   ShieldCheck,
   FileCheck2,
@@ -22,6 +23,18 @@ import {
 } from "lucide-react";
 import { buildHead } from "@/components/site/seo";
 import { ComplaintForm } from "@/components/site/ComplaintForm";
+
+/* ==========================================================================
+   Google Analytics Window Interface Augmentation
+   ========================================================================== */
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void;
+    dataLayer?: unknown[];
+  }
+}
+
+const GA_MEASUREMENT_ID = "G-CM4MQBXFP4";
 
 /* ==========================================================================
    Types Definitions
@@ -54,7 +67,7 @@ interface HeroProps {
 }
 
 /* ==========================================================================
-   بيانات ثابتة (تم تقديم FAQ لتسهيل قراءته في الـ Schema)
+   بيانات ثابتة (FAQ + Categories + Steps + Features)
    ========================================================================== */
 const faqPreview: FaqItem[] = [
   {
@@ -102,29 +115,23 @@ const whyUs: FeatureItem[] = [
 export const Route = createFileRoute("/")({
   head: () =>
     buildHead({
-      // 1. عنوان فريد وجذاب يستهدف أهم الكلمات المفتاحية في الإمارات
-      title: "منصة التقرير الإماراتي | تقديم وتوثيق شكاوى المستهلك ضد الشركات الخاصة",
-
-      // 2. وصف تسويقي ومحسّن لجوجل يرفع نسبة النقر (CTR)
+      title: "منصة شكاوى المستهلك | تقديم وتوثيق شكاوى المستهلك ضد الشركات الخاصة",
       description:
-        "هل واجهت مشكلة تجارية؟ قدّم شكواك ورسالتك الآن عبر منصة التقرير الإماراتي لتوثيق ومتابعة شكاوى المستهلكين ضد المنشآت والشركات الخاصة في الإمارات بسهولة وشفافية.",
-
+        "هل واجهت مشكلة تجارية؟ قدّم شكواك ورسالتك الآن عبر منصة شكاوى المستهلك لتوثيق ومتابعة شكاوى المستهلكين ضد المنشآت والشركات الخاصة في الإمارات بسهولة وشفافية.",
       path: "/",
-
-      // 3. منظومة Schema المتقدمة والمحدثة بالدومين والاسم الرسمي
       jsonLd: [
         {
           "@context": "https://schema.org",
           "@type": "WebSite",
-          name: "منصة التقرير الإماراتي",
-          alternateName: "التقرير الإماراتي لخدمة المستهلك",
+          name: "منصة شكاوى المستهلك",
+          alternateName: "المنصة الرقمية الموحدة لتوثيق الشكاوى التجارية بالإمارات",
           inLanguage: "ar",
           url: "https://www.emirates-report.com",
         },
         {
           "@context": "https://schema.org",
           "@type": "Organization",
-          name: "منصة التقرير الإماراتي المستقلة",
+          name: "منصة شكاوى المستهلك",
           url: "https://www.emirates-report.com",
           logo: "https://www.emirates-report.com/logo.png",
           address: {
@@ -139,7 +146,7 @@ export const Route = createFileRoute("/")({
           serviceType: "توثيق ومتابعة شكاوى المستهلكين",
           provider: {
             "@type": "Organization",
-            name: "منصة التقرير الإماراتي",
+            name: "منصة شكاوى المستهلك",
           },
           areaServed: {
             "@type": "Country",
@@ -175,6 +182,7 @@ export const Route = createFileRoute("/")({
     }),
   component: HomePage,
 });
+
 /* ==========================================================================
    Hero Section Component
    ========================================================================== */
@@ -325,8 +333,35 @@ function scrollToForm(e: React.MouseEvent<HTMLAnchorElement>) {
    Main HomePage Component
    ========================================================================== */
 function HomePage() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  // تتبع تنقلات الشاشة عبر Google Analytics
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.gtag) {
+      window.gtag("config", GA_MEASUREMENT_ID, {
+        page_path: pathname,
+      });
+    }
+  }, [pathname]);
+
   return (
     <>
+      {/* 🟢 سكربت Google Analytics مدمج بطريقة React آمنة ومطابقة للمواصفات */}
+      <script
+        async
+        src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+      />
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_MEASUREMENT_ID}', { page_path: window.location.pathname });
+          `,
+        }}
+      />
+
       <Hero onPrimaryClick={scrollToForm} />
 
       <section className="border-b border-border bg-secondary/20 py-16 md:py-24">

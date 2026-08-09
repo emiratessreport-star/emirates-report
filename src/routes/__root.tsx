@@ -6,6 +6,7 @@ import {
   useRouter,
   HeadContent,
   Scripts,
+  useRouterState,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
@@ -13,6 +14,18 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
+
+/* ==========================================================================
+   Google Analytics Types Definition & Constants
+   ========================================================================== */
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void;
+    dataLayer?: unknown[];
+  }
+}
+
+const GA_MEASUREMENT_ID = "G-CM4MQBXFP4";
 
 const ORG_JSON_LD = {
   "@context": "https://schema.org",
@@ -119,6 +132,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: "https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=Tajawal:wght@500;700;800&display=swap",
       },
     ],
+    // إضافة الـ Scripts الخاصة بـ Head مثل Schema Org هنا بشكل صحيح
     scripts: [
       {
         type: "application/ld+json",
@@ -137,6 +151,21 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="ar" dir="rtl">
       <head>
         <HeadContent />
+        {/* تحميل Google Analytics v4 في وسم <head> */}
+        <script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${GA_MEASUREMENT_ID}', { page_path: window.location.pathname });
+            `,
+          }}
+        />
       </head>
       <body>
         {children}
@@ -148,6 +177,16 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  // تتبع التنقل بين الصفحات في Google Analytics (SPA Navigation Tracking)
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.gtag) {
+      window.gtag("config", GA_MEASUREMENT_ID, {
+        page_path: pathname,
+      });
+    }
+  }, [pathname]);
 
   return (
     <QueryClientProvider client={queryClient}>

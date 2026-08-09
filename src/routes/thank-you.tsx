@@ -65,7 +65,7 @@ function ThankYouPage() {
             <p className="mx-auto mt-5 max-w-xl text-base leading-8 text-white/55 md:text-lg">
               شكرًا لثقتك بـ{" "}
               <span className="font-semibold text-white/80">
-                منصة التقرير الإماراتي
+                منصة شكاوى المستهلك
               </span>
               . تم استلام شكواك بنجاح، وبدأت عملية مراجعتها.
             </p>
