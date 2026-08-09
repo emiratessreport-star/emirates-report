@@ -1,7 +1,7 @@
 import { useNavigate } from "@tanstack/react-router";
 import { useCallback, useRef, useState } from "react";
 import { z } from "zod";
-import { Loader2, Send } from "lucide-react";
+import { Loader2, Send, AlertCircle } from "lucide-react";
 import { submitComplaint } from "@/lib/submit-complaint.functions";
 
 const statuses = ["مواطن", "مقيم"];
@@ -241,10 +241,10 @@ export function ComplaintForm() {
       onSubmit={onSubmit}
       noValidate
       aria-busy={submitting}
-      className="rounded-3xl border border-border bg-card p-6 shadow-elegant md:p-8"
+      className="rounded-3xl border border-border bg-card p-6 shadow-card md:p-8"
     >
       <fieldset className="grid gap-4 md:grid-cols-2" disabled={submitting}>
-        <legend className="col-span-full mb-1 text-base font-semibold">
+        <legend className="col-span-full mb-1 text-base font-semibold text-foreground">
           بيانات مقدّم الشكوى
         </legend>
 
@@ -408,7 +408,9 @@ export function ComplaintForm() {
             <input
               type="checkbox"
               name="consent"
-              className="mt-1 h-4 w-4 rounded border-border text-primary focus:ring-ring"
+              className={`mt-1 h-4 w-4 rounded border-border text-primary focus:ring-accent ${
+                errors.consent ? "border-red-600 ring-2 ring-red-500/20" : ""
+              }`}
               checked={values.consent === true}
               onChange={(e) => update("consent", e.target.checked as true)}
               onBlur={() => handleBlur("consent")}
@@ -418,18 +420,23 @@ export function ComplaintForm() {
             />
             <span className="leading-7 text-muted-foreground">
               أوافق على{" "}
-              <a href="/privacy" className="text-primary underline">
+              <a href="/privacy" className="text-primary font-semibold underline">
                 سياسة الخصوصية
               </a>{" "}
               و
-              <a href="/terms" className="mx-1 text-primary underline">
+              <a href="/terms" className="mx-1 text-primary font-semibold underline">
                 الشروط والأحكام
               </a>
               ، وأقرّ بأن المعلومات المقدّمة صحيحة.
             </span>
           </label>
           {errors.consent && (
-            <p id="consent-error" role="alert" className="mt-1 text-xs text-destructive animate-in fade-in slide-in-from-top-1 duration-200">
+            <p
+              id="consent-error"
+              role="alert"
+              className="mt-1.5 text-xs font-semibold text-red-600 animate-in fade-in slide-in-from-top-1 duration-200 flex items-center gap-1"
+            >
+              <AlertCircle className="h-3.5 w-3.5 shrink-0" />
               {errors.consent}
             </p>
           )}
@@ -437,7 +444,12 @@ export function ComplaintForm() {
 
         <div className="md:col-span-2">
           {submitError && (
-            <p role="alert" aria-live="polite" className="mb-3 rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive animate-in fade-in slide-in-from-top-1 duration-200">
+            <p
+              role="alert"
+              aria-live="polite"
+              className="mb-3 rounded-xl border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-600 animate-in fade-in slide-in-from-top-1 duration-200 flex items-center gap-2"
+            >
+              <AlertCircle className="h-4 w-4 shrink-0" />
               {submitError}
             </p>
           )}
@@ -445,7 +457,7 @@ export function ComplaintForm() {
             type="submit"
             disabled={submitting}
             aria-disabled={submitting}
-            className="group inline-flex w-full items-center justify-center gap-3 rounded-full bg-primary px-8 py-4 text-base font-bold text-primary-foreground shadow-sm transition-all duration-300 hover:bg-primary/90 hover:shadow-elegant hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0 md:text-lg"
+            className="group inline-flex w-full items-center justify-center gap-3 rounded-full bg-primary px-8 py-4 text-base font-bold text-primary-foreground shadow-sm transition-all duration-300 hover:bg-primary/90 hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0 md:text-lg"
           >
             {submitting ? (
               <>
@@ -468,16 +480,19 @@ export function ComplaintForm() {
 const inputBase =
   "w-full rounded-xl border bg-background px-4 py-2.5 text-sm text-foreground shadow-sm outline-none transition-colors focus:ring-2";
 
+/* دالة ألوان حقول المدخلات */
 function inputClsFor(state: "error" | "valid" | "idle") {
   if (state === "error") {
-    return `${inputBase} border-destructive focus:border-destructive focus:ring-destructive/30`;
+    // إطار أحمر صريح وخلفية ذات تمويه أحمر خفيف عند الخطأ
+    return `${inputBase} border-red-600 bg-red-50/20 text-red-950 focus:border-red-600 focus:ring-red-500/30`;
   }
   if (state === "valid") {
     return `${inputBase} border-emerald-500 focus:border-emerald-500 focus:ring-emerald-500/30`;
   }
-  return `${inputBase} border-input focus:border-ring focus:ring-ring/30`;
+  return `${inputBase} border-border focus:border-accent focus:ring-accent/30`;
 }
 
+/* مكون الحقل وعرض خطأ الفالديشن بالإحمر الواضح */
 function Field({
   label,
   name,
@@ -494,7 +509,7 @@ function Field({
   return (
     <div>
       <label htmlFor={name} className="mb-1.5 block text-sm font-medium text-foreground">
-        {label} {required && <span className="text-destructive">*</span>}
+        {label} {required && <span className="text-red-600">*</span>}
       </label>
       {children}
       {error && (
@@ -502,8 +517,9 @@ function Field({
           id={`${name}-error`}
           role="alert"
           aria-live="polite"
-          className="mt-1 text-xs text-destructive animate-in fade-in slide-in-from-top-1 duration-200"
+          className="mt-1.5 text-xs font-semibold text-red-600 animate-in fade-in slide-in-from-top-1 duration-200 flex items-center gap-1"
         >
+          <AlertCircle className="h-3.5 w-3.5 shrink-0" />
           {error}
         </p>
       )}

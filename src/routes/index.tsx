@@ -13,17 +13,92 @@ import {
   CheckCircle2,
   Clock,
   Lock,
-  Search,
   Scale,
   Truck,
   HelpCircle,
   Sparkles,
   ChevronLeft,
+  LucideIcon,
 } from "lucide-react";
 import { buildHead } from "@/components/site/seo";
 import { ComplaintForm } from "@/components/site/ComplaintForm";
 
-// Keywords Target: حماية المستهلك الإمارات, تقديم شكوى تجارية, تقديم شكوى ضد شركة, وزارة الاقتصاد شكاوى المستهلك, حماية المستهلك دبي
+/* ==========================================================================
+   Types Definitions
+   ========================================================================== */
+interface CategoryItem {
+  icon: LucideIcon;
+  title: string;
+  desc: string;
+}
+
+interface StepItem {
+  n: string;
+  title: string;
+  desc: string;
+}
+
+interface FeatureItem {
+  icon: LucideIcon;
+  title: string;
+  desc: string;
+}
+
+interface FaqItem {
+  q: string;
+  a: string;
+}
+
+interface HeroProps {
+  onPrimaryClick: (e: React.MouseEvent<HTMLAnchorElement>) => void;
+}
+
+/* ==========================================================================
+   بيانات ثابتة (تم تقديم FAQ لتسهيل قراءته في الـ Schema)
+   ========================================================================== */
+const faqPreview: FaqItem[] = [
+  {
+    q: "كيف تعمل منصة حماية المستهلك لتقديم الشكاوى؟",
+    a: "تتيح لك المنصة تقديم بيانات شكواك والوثائق الداعمة بسهولة. يقوم فريقنا بمراجعتها، توثيقها برقم مرجعي، ثم مخاطبة الشركة المعنية لمتابعة التوصل إلى حل إيجابي.",
+  },
+  {
+    q: "هل خدمة تقديم الشكوى مجانية للمستهلكين في الإمارات؟",
+    a: "نعم، خدمة توثيق وتقديم ومتابعة الشكاوى مجانية بالكامل لجميع المستهلكين والمتعاملين داخل دولة الإمارات العربية المتحدة.",
+  },
+  {
+    q: "ما الدور الذي تقوم به المنصة لحل المشكلة مع الشركة؟",
+    a: "نقوم بتوثيق الشكوى قانونياً، إصدار الرقم المرجعي، ومخاطبة إدارة المنشأة التجارية للوصول إلى تسوية عادلة تحمي حقوق المستهلك وفق الأنظمة المتبعة.",
+  },
+];
+
+const categories: CategoryItem[] = [
+  { icon: Smartphone, title: "شكاوى الاتصالات والإنترنت", desc: "عقود الهواتف، مشاكل التغطية، ورسوم الخدمات المضافة بدون إذن." },
+  { icon: ShoppingCart, title: "التسوق الإلكتروني والمتاجر", desc: "المتاجر الإلكترونية، التأخر في التوصيل، وسياسات الإرجاع المضللة." },
+  { icon: Building2, title: "العقارات والوساطة التجارية", desc: "خلافات شركات إدارة العقارات، الرسوم الإدارية، وعقود الوساطة." },
+  { icon: Plane, title: "السفر والحجوزات السياحية", desc: "إلغاء وتأخير الرحلات، مشكلات حجوزات الفنادق، والشركات السياحية." },
+  { icon: CreditCard, title: "البنوك والخدمات المالية", desc: "الرسوم المجحفة، المعاملات غير المصرح بها، والخدمات المصرفية." },
+  { icon: Wrench, title: "الصيانة والخدمات المنزلية", desc: "عقود الصيانة، الأجهزة الكهربائية، والخدمات الفنية غير المطابقة." },
+  { icon: Truck, title: "تطبيقات التوصيل للنقل", desc: "تطبيقات التوصيل الذكية، طلبات الطعام، وخدمات النقل الخاص." },
+  { icon: Users, title: "خدمات القطاع الخاص الأخرى", desc: "الشكاوى العامة ضد الشركات والمراكز التجارية الخاصة بالدولة." },
+];
+
+const steps: StepItem[] = [
+  { n: "01", title: "تعبئة نموذج الشكوى", desc: "إدخال التفاصيل الأساسية والمشكلة وبيانات الشركة المعنية في دقائق." },
+  { n: "02", title: "التدقيق المبدئي للطلب", desc: "يقوم الفريق بالتحقق من اكتمال البيانات والأوراق الثبوتية." },
+  { n: "03", title: "إصدار رقم مرجعي ومخاطبة الجهة", desc: "تسجيل الشكوى رسمياً وإشعال الشركة بالمخالفة أو المشكلة." },
+  { n: "04", title: "متابعة التسوية والحل", desc: "تلقي الإشعارات الفورية حول رد الشركة والحلول المقترحة." },
+];
+
+const whyUs: FeatureItem[] = [
+  { icon: ShieldCheck, title: "منصة معتمدة وموثوقة", desc: "معايير مهنية وقانونية صارمة لضمان موثوقية وحماية كافة الأطراف." },
+  { icon: Clock, title: "معالجة سريعة وفعالة", desc: "بدء مراجعة الشكوى واتخاذ الإجراءات الأولية خلال 24 ساعة عمل." },
+  { icon: Scale, title: "توثيق قانوني متكامل", desc: "إصدار ملف مرجعي موحد للشكوى يمكن استخدامه في المتابعات الرسمية." },
+  { icon: Users, title: "دعم مخصص للمستهلك", desc: "فريق عمل يتفهم القوانين المحلية ويدعم المستهلك خطوة بخطوة." },
+];
+
+/* ==========================================================================
+   TanStack Router Route Definition
+   ========================================================================== */
 export const Route = createFileRoute("/")({
   head: () =>
     buildHead({
@@ -32,7 +107,6 @@ export const Route = createFileRoute("/")({
         "هل واجهت مشكلة تجارية أو احتيالاً؟ قدم شكواك الرسمية الآن عبر المنصة المعتمدة لتوثيق ومتابعة شكاوى المستهلكين ضد المنشآت والشركات الخاصة في الإمارات.",
       path: "/",
       jsonLd: [
-        // 1. WebSite Schema & Search Box
         {
           "@context": "https://schema.org",
           "@type": "WebSite",
@@ -46,7 +120,6 @@ export const Route = createFileRoute("/")({
             "query-input": "required name=search_term_string",
           },
         },
-        // 2. Organization Schema
         {
           "@context": "https://schema.org",
           "@type": "Organization",
@@ -59,7 +132,6 @@ export const Route = createFileRoute("/")({
             "addressRegion": "Dubai / Abu Dhabi",
           },
         },
-        // 3. Service Schema
         {
           "@context": "https://schema.org",
           "@type": "Service",
@@ -91,7 +163,6 @@ export const Route = createFileRoute("/")({
             "reviewCount": "1420",
           },
         },
-        // 4. FAQ Schema (تساعد بشكل كبير في تحسين نتائج البحث)
         {
           "@context": "https://schema.org",
           "@type": "FAQPage",
@@ -110,19 +181,11 @@ export const Route = createFileRoute("/")({
 });
 
 /* ==========================================================================
-   Hero Section Component (UI/UX Optimized)
+   Hero Section Component
    ========================================================================== */
-/* ==========================================================================
-   Hero Section Component (Static & Professional UI/UX)
-   ========================================================================== */
-interface HeroProps {
-  onPrimaryClick: (e: React.MouseEvent<HTMLAnchorElement>) => void;
-}
-
 export function Hero({ onPrimaryClick }: HeroProps) {
   return (
     <section className="relative overflow-hidden bg-background py-12 md:py-20 lg:py-24 border-b border-border/50">
-      {/* خلفية شبكية عصرية وزخارف مضيئة */}
       <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px]" />
       <div
         className="pointer-events-none absolute -top-32 right-1/4 -z-10 h-[450px] w-[450px] rounded-full bg-primary/10 blur-[120px]"
@@ -135,7 +198,6 @@ export function Hero({ onPrimaryClick }: HeroProps) {
 
       <div className="container-page relative z-10">
         <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
-          {/* الجانب الأيمن: العناوين والدعوة للتفاعل */}
           <div className="text-right lg:col-span-7">
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs font-bold text-primary shadow-xs backdrop-blur-sm">
               <Sparkles className="h-3.5 w-3.5 text-primary" />
@@ -150,7 +212,6 @@ export function Hero({ onPrimaryClick }: HeroProps) {
               البوابة الذكية المعتمدة لتقديم ومتابعة الشكاوى ضد الشركات والمنشآت التجارية الخاصة في دولة الإمارات برقم مرجعي موحد وضمان الحماية الكاملة للمستهلك.
             </p>
 
-            {/* الأزرار التفاعلية */}
             <div className="mt-8 flex flex-col sm:flex-row justify-start gap-4">
               <a
                 href="#complaint-form"
@@ -171,7 +232,6 @@ export function Hero({ onPrimaryClick }: HeroProps) {
               </a>
             </div>
 
-            {/* ميزات سريعة تحت الأزرار */}
             <div className="mt-10 flex flex-wrap items-center gap-6 border-t border-border/60 pt-6 text-xs text-muted-foreground font-semibold">
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="h-4 w-4 text-emerald-500" />
@@ -188,7 +248,6 @@ export function Hero({ onPrimaryClick }: HeroProps) {
             </div>
           </div>
 
-          {/* الجانب الأيسر: بطاقة استعراض المزايا الثابتة (Static Value Props) */}
           <div className="relative lg:col-span-5">
             <div className="relative mx-auto w-full max-w-md rounded-2xl border border-border/80 bg-card/90 p-6 shadow-xl backdrop-blur-md">
               <div className="flex items-center justify-between border-b border-border/60 pb-4">
@@ -206,7 +265,6 @@ export function Hero({ onPrimaryClick }: HeroProps) {
                 </span>
               </div>
 
-              {/* المزايا والخصائص الثابتة */}
               <div className="mt-5 space-y-3.5">
                 {[
                   {
@@ -256,50 +314,7 @@ export function Hero({ onPrimaryClick }: HeroProps) {
 }
 
 /* ==========================================================================
-   بيانات الأقسام الشاملة (Data Arrays)
-   ========================================================================== */
-const categories = [
-  { icon: Smartphone, title: "شكاوى الاتصالات والإنترنت", desc: "عقود الهواتف، مشاكل التغطية، ورسوم الخدمات المضافة بدون إذن." },
-  { icon: ShoppingCart, title: "التسوق الإلكتروني والمتاجر", desc: "المتاجر الإلكترونية، التأخر في التوصيل، وسياسات الإرجاع المضللة." },
-  { icon: Building2, title: "العقارات والوساطة التجارية", desc: "خلافات شركات إدارة العقارات، الرسوم الإدارية، وعقود الوساطة." },
-  { icon: Plane, title: "السفر والحجوزات السياحية", desc: "إلغاء وتأخير الرحلات، مشكلات حجوزات الفنادق، والشركات السياحية." },
-  { icon: CreditCard, title: "البنوك والخدمات المالية", desc: "الرسوم المجحفة، المعاملات غير المصرح بها، والخدمات المصرفية." },
-  { icon: Wrench, title: "الصيانة والخدمات المنزلية", desc: "عقود الصيانة، الأجهزة الكهربائية، والخدمات الفنية غير المطابقة." },
-  { icon: Truck, title: "تطبيقات التوصيل والنقل", desc: "تطبيقات التوصيل الذكية، طلبات الطعام، وخدمات النقل الخاص." },
-  { icon: Users, title: "خدمات القطاع الخاص الأخرى", desc: "الشكاوى العامة ضد الشركات والمراكز التجارية الخاصة بالدولة." },
-];
-
-const steps = [
-  { n: "01", title: "تعبئة نموذج الشكوى", desc: "إدخال التفاصيل الأساسية والمشكلة وبيانات الشركة المعنية في دقائق." },
-  { n: "02", title: "التدقيق المبدئي للطلب", desc: "يقوم الفريق بالتحقق من اكتمال البيانات والأوراق الثبوتية." },
-  { n: "03", title: "إصدار رقم مرجعي ومخاطبة الجهة", desc: "تسجيل الشكوى رسمياً وإشعال الشركة بالمخالفة أو المشكلة." },
-  { n: "04", title: "متابعة التسوية والحل", desc: "تلقي الإشعارات الفورية حول رد الشركة والحلول المقترحة." },
-];
-
-const whyUs = [
-  { icon: ShieldCheck, title: "منصة معتمدة وموثوقة", desc: "معايير مهنية وقانونية صارمة لضمان موثوقية وحماية كافة الأطراف." },
-  { icon: Clock, title: "معالجة سريعة وفعالة", desc: "بدء مراجعة الشكوى واتخاذ الإجراءات الأولية خلال 24 ساعة عمل." },
-  { icon: Scale, title: "توثيق قانوني متكامل", desc: "إصدار ملف مرجعي موحد للشكوى يمكن استخدامه في المتابعات الرسمية." },
-  { icon: Users, title: "دعم مخصص للمستهلك", desc: "فريق عمل يتفهم القوانين المحلية ويدعم المستهلك خطوة بخطوة." },
-];
-
-const faqPreview = [
-  {
-    q: "كيف تعمل منصة حماية المستهلك لتقديم الشكاوى؟",
-    a: "تتيح لك المنصة تقديم بيانات شكواك والوثائق الداعمة بسهولة. يقوم فريقنا بمراجعتها، توثيقها برقم مرجعي، ثم مخاطبة الشركة المعنية لمتابعة التوصل إلى حل إيجابي.",
-  },
-  {
-    q: "هل خدمة تقديم الشكوى مجانية للمستهلكين في الإمارات؟",
-    a: "نعم، خدمة توثيق وتقديم ومتابعة الشكاوى مجانية بالكامل لجميع المستهلكين والمتعاملين داخل دولة الإمارات العربية المتحدة.",
-  },
-  {
-    q: "ما الدور الذي تقوم به المنصة لحل المشكلة مع الشركة؟",
-    a: "نقوم بتوثيق الشكوى قانونياً، إصدار الرقم المرجعي، ومخاطبة إدارة المنشأة التجارية للوصول إلى تسوية عادلة تحمي حقوق المستهلك وفق الأنظمة المتبعة.",
-  },
-];
-
-/* ==========================================================================
-   وظيفة التمرير السلس مع تحسين التفاعل
+   Smooth Scroll Helper Function
    ========================================================================== */
 function scrollToForm(e: React.MouseEvent<HTMLAnchorElement>) {
   e.preventDefault();
@@ -317,10 +332,8 @@ function scrollToForm(e: React.MouseEvent<HTMLAnchorElement>) {
 function HomePage() {
   return (
     <>
-      {/* 1. قسم الهيرو الرئيسي */}
       <Hero onPrimaryClick={scrollToForm} />
 
-      {/* 2. قسم نموذج الشكوى الرئيسي (Complaint Form Section) */}
       <section className="border-b border-border bg-secondary/20 py-16 md:py-24">
         <div className="container-page">
           <div className="mx-auto max-w-2xl text-center">
@@ -340,7 +353,6 @@ function HomePage() {
         </div>
       </section>
 
-      {/* 3. أقسام الشكاوى (Categories Grid) */}
       <section className="py-20 md:py-28">
         <div className="container-page">
           <div className="mx-auto max-w-2xl text-center">
@@ -369,7 +381,6 @@ function HomePage() {
         </div>
       </section>
 
-      {/* 4. كيف تعمل المنصة (How it Works) */}
       <section id="how-it-works" className="border-y border-border/80 bg-secondary/30 py-20 md:py-28">
         <div className="container-page">
           <div className="mx-auto max-w-2xl text-center">
@@ -395,7 +406,6 @@ function HomePage() {
         </div>
       </section>
 
-      {/* 5. مزايا المنصة (Why Choose Us) */}
       <section className="py-20 md:py-28">
         <div className="container-page grid gap-12 lg:grid-cols-12 lg:items-center">
           <div className="lg:col-span-5">
@@ -434,7 +444,6 @@ function HomePage() {
         </div>
       </section>
 
-      {/* 6. الأسئلة الشائعة (FAQ Preview) */}
       <section className="border-t border-border bg-secondary/20 py-20 md:py-28">
         <div className="container-page grid gap-10 lg:grid-cols-3">
           <div>
@@ -466,7 +475,6 @@ function HomePage() {
         </div>
       </section>
 
-      {/* 7. قسم الدعوة للتفاعل السريع (CTA Banner) */}
       <section className="py-16 md:py-24">
         <div className="container-page">
           <div className="relative overflow-hidden rounded-3xl bg-primary p-10 text-center text-primary-foreground shadow-xl md:p-16">
