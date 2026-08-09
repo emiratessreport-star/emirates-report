@@ -18,7 +18,7 @@ export const Route = createFileRoute("/privacy")({
         { name: "الرئيسية", path: "/" },
         { name: "سياسة الخصوصية", path: "/privacy" },
       ],
-    }),
+    }) as any,
   component: PrivacyPage,
 });
 

@@ -1,8 +1,6 @@
 import type { ReactNode } from "react";
 
-// النطاق الأساسي لموقعك (استبدله برابط موقعك الحقيقي إذا اختلف)
 const SITE_URL = "https://www.emirates-report.com";
-// الصورة الافتراضية للمشاركة على منصات التواصل
 const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.jpg`;
 
 interface SeoProps {
@@ -11,7 +9,7 @@ interface SeoProps {
   path: string;
   type?: "website" | "article";
   image?: string;
-  noindex?: boolean; // خيار لإخفاء الصفحة من جوجل عند الحاجة (مثل صفحة الشكر)
+  noindex?: boolean;
   jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>;
   breadcrumbs?: Array<{ name: string; path: string }>;
 }
@@ -26,10 +24,8 @@ export function buildHead({
   jsonLd,
   breadcrumbs,
 }: SeoProps) {
-  // تحويل المسار النسبي إلى رابط كامل (Full URL) لضمان عمل الـ Open Graph بشكل صحيح
   const fullUrl = `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
   
-  // تحديد الصورة: إما الصورة الممررة للمكون أو الصورة الافتراضية للموقع
   const ogImage = image
     ? (image.startsWith("http") ? image : `${SITE_URL}${image.startsWith("/") ? image : `/${image}`}`)
     : DEFAULT_OG_IMAGE;
@@ -38,7 +34,7 @@ export function buildHead({
     { title },
     { name: "description", content: description },
     
-    // Open Graph Tags (واتساب، فيسبوك، لينكد إن)
+    // Open Graph Tags
     { property: "og:title", content: title },
     { property: "og:description", content: description },
     { property: "og:type", content: type },
@@ -53,12 +49,17 @@ export function buildHead({
     { name: "twitter:image", content: ogImage },
   ];
 
-  // منع محركات البحث من الفهرسة في حال تفعيل noindex (مثل صفحة thank-you)
   if (noindex) {
     meta.push({ name: "robots", content: "noindex, nofollow" });
   }
 
-  const links = [{ rel: "canonical", href: fullUrl }];
+  const links: Array<Record<string, string>> = [
+    { rel: "canonical", href: fullUrl },
+    { rel: "preconnect", href: "https://fonts.googleapis.com" },
+    { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+    { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" }
+  ];
+
   const scripts: Array<{ type: string; children: string }> = [];
   const schemas: Array<Record<string, unknown>> = [];
 
