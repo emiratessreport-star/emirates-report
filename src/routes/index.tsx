@@ -143,10 +143,12 @@ export const Route = createFileRoute("/")({
         {
           "@context": "https://schema.org",
           "@type": "Service",
-          serviceType: "توثيق ومتابعة شكاوى المستهلكين",
+          name: "تقديم وتوثيق الشكاوى التجارية",
+          serviceType: "توثيق وتسوية شكاوى المستهلكين",
           provider: {
             "@type": "Organization",
-            name: "منصة شكاوى المستهلك",
+            name: "منصة حماية المستهلك الإمارات",
+            url: "https://www.emirates-report.com",
           },
           areaServed: {
             "@type": "Country",
@@ -154,13 +156,13 @@ export const Route = createFileRoute("/")({
           },
           hasOfferCatalog: {
             "@type": "OfferCatalog",
-            name: "خدمات توثيق الشكاوى التجاريّة",
+            name: "خدمات حماية المستهلك والحلول التجارية",
             itemListElement: [
               {
                 "@type": "Offer",
                 itemOffered: {
                   "@type": "Service",
-                  name: "تقديم وتوثيق الشكاوى التجارية ضد الشركات الخاصة",
+                  name: "تقديم وتوثيق الشكاوى التجارية",
                 },
               },
             ],
@@ -182,28 +184,19 @@ export const Route = createFileRoute("/")({
     }),
   component: HomePage,
 });
-
 /* ==========================================================================
    Hero Section Component
    ========================================================================== */
 export function Hero({ onPrimaryClick }: HeroProps) {
   return (
-    <section className="relative overflow-hidden bg-background py-12 md:py-20 lg:py-24 border-b border-border/50">
+    <section className="relative overflow-hidden bg-background py-12 md:py-20 lg:py-24 border-b border-border/50 min-h-[500px]">
       <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px]" />
-      <div
-        className="pointer-events-none absolute -top-32 right-1/4 -z-10 h-[450px] w-[450px] rounded-full bg-primary/10 blur-[120px]"
-        aria-hidden="true"
-      />
-      <div
-        className="pointer-events-none absolute top-1/2 left-10 -z-10 h-[300px] w-[300px] rounded-full bg-accent/10 blur-[100px]"
-        aria-hidden="true"
-      />
 
       <div className="container-page relative z-10">
         <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
           <div className="text-right lg:col-span-7">
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs font-bold text-primary shadow-xs backdrop-blur-sm">
-              <Sparkles className="h-3.5 w-3.5 text-primary" />
+              <Sparkles className="h-3.5 w-3.5 text-primary shrink-0" />
               <span>المنصة الرقمية الموحدة لتوثيق الشكاوى التجارية بالإمارات</span>
             </div>
 
@@ -221,41 +214,41 @@ export function Hero({ onPrimaryClick }: HeroProps) {
                 onClick={onPrimaryClick}
                 className="group inline-flex items-center justify-center gap-2.5 rounded-xl bg-primary px-7 py-3.5 text-base font-bold text-primary-foreground shadow-lg shadow-primary/25 transition-all duration-200 hover:bg-primary/95 hover:shadow-xl hover:shadow-primary/30 active:scale-[0.98]"
               >
-                <FileCheck2 className="h-5 w-5" />
+                <FileCheck2 className="h-5 w-5 shrink-0" />
                 تقديم شكوى الآن
-                <ArrowLeft className="h-4 w-4 mr-1 transition-transform group-hover:-translate-x-1" aria-hidden="true" />
+                <ArrowLeft className="h-4 w-4 mr-1 shrink-0 transition-transform group-hover:-translate-x-1" aria-hidden="true" />
               </a>
 
               <a
                 href="#how-it-works"
                 className="inline-flex items-center justify-center gap-2.5 rounded-xl border border-border/80 bg-surface/80 px-6 py-3.5 text-base font-semibold text-foreground backdrop-blur-sm transition-all duration-200 hover:bg-surface hover:border-border active:scale-[0.98]"
               >
-                <HelpCircle className="h-4 w-4 text-muted-foreground" />
+                <HelpCircle className="h-4 w-4 shrink-0 text-muted-foreground" />
                 كيف نعمل؟
               </a>
             </div>
 
             <div className="mt-10 flex flex-wrap items-center gap-6 border-t border-border/60 pt-6 text-xs text-muted-foreground font-semibold">
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500" />
                 <span>خدمة مجانية 100%</span>
               </div>
               <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-amber-500" />
+                <Clock className="h-4 w-4 shrink-0 text-amber-500" />
                 <span>بدء المعالجة خلال 24 ساعة</span>
               </div>
               <div className="flex items-center gap-2">
-                <Lock className="h-4 w-4 text-primary" />
+                <Lock className="h-4 w-4 shrink-0 text-primary" />
                 <span>بيانات مشفرة وآمنة</span>
               </div>
             </div>
           </div>
 
           <div className="relative lg:col-span-5">
-            <div className="relative mx-auto w-full max-w-md rounded-2xl border border-border/80 bg-card/90 p-6 shadow-xl backdrop-blur-md">
+            <div className="relative mx-auto w-full max-w-md min-h-[380px] rounded-2xl border border-border/80 bg-card/90 p-6 shadow-xl backdrop-blur-md">
               <div className="flex items-center justify-between border-b border-border/60 pb-4">
                 <div className="flex items-center gap-3">
-                  <div className="grid h-10 w-10 place-items-center rounded-xl bg-primary/10 text-primary">
+                  <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
                     <ShieldCheck className="h-5 w-5" />
                   </div>
                   <div>
@@ -305,7 +298,7 @@ export function Hero({ onPrimaryClick }: HeroProps) {
               </div>
 
               <div className="mt-5 flex items-center justify-center gap-1.5 text-[11px] text-muted-foreground border-t border-border/40 pt-3">
-                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
+                <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-500" />
                 <span>متوافق مع التشريعات والمعايير الرقمية للإمارات</span>
               </div>
             </div>
@@ -335,7 +328,7 @@ function scrollToForm(e: React.MouseEvent<HTMLAnchorElement>) {
 function HomePage() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
-  // تتبع تنقلات الشاشة عبر Google Analytics
+  // تتبع تنقلات الشاشة عبر Google Analytics بدون تكرار السكريبت بـ DOM
   useEffect(() => {
     if (typeof window !== "undefined" && window.gtag) {
       window.gtag("config", GA_MEASUREMENT_ID, {
@@ -346,29 +339,13 @@ function HomePage() {
 
   return (
     <>
-      {/* 🟢 سكربت Google Analytics مدمج بطريقة React آمنة ومطابقة للمواصفات */}
-      <script
-        async
-        src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-      />
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${GA_MEASUREMENT_ID}', { page_path: window.location.pathname });
-          `,
-        }}
-      />
-
       <Hero onPrimaryClick={scrollToForm} />
 
       <section className="border-b border-border bg-secondary/20 py-16 md:py-24">
         <div className="container-page">
           <div className="mx-auto max-w-2xl text-center">
             <span className="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-widest text-primary">
-              <FileCheck2 className="h-4 w-4" />
+              <FileCheck2 className="h-4 w-4 shrink-0" />
               النموذج الموحد
             </span>
             <h2 className="mt-2 text-3xl font-extrabold md:text-4xl text-foreground">قدّم شكواك التجارية الآن</h2>
@@ -399,7 +376,7 @@ function HomePage() {
                 className="group relative rounded-2xl border border-border/80 bg-card p-6 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-md"
               >
                 <div className="grid h-12 w-12 place-items-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
-                  <c.icon className="h-6 w-6" aria-hidden="true" />
+                  <c.icon className="h-6 w-6 shrink-0" aria-hidden="true" />
                 </div>
                 <h3 className="mt-5 text-base font-bold text-foreground group-hover:text-primary transition-colors">
                   {c.title}
@@ -452,7 +429,7 @@ function HomePage() {
                 className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-bold text-primary-foreground shadow-md transition-all hover:bg-primary/90 hover:shadow-lg"
               >
                 تقديم شكوى جديدة
-                <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+                <ArrowLeft className="h-4 w-4 shrink-0" aria-hidden="true" />
               </a>
             </div>
           </div>
@@ -464,7 +441,7 @@ function HomePage() {
                 className="rounded-2xl border border-border/80 bg-card p-6 shadow-xs transition-all hover:border-primary/30 hover:shadow-md"
               >
                 <div className="grid h-11 w-11 place-items-center rounded-xl bg-primary/10 text-primary">
-                  <w.icon className="h-5 w-5" aria-hidden="true" />
+                  <w.icon className="h-5 w-5 shrink-0" aria-hidden="true" />
                 </div>
                 <h3 className="mt-4 text-base font-bold text-foreground">{w.title}</h3>
                 <p className="mt-2 text-xs leading-5 text-muted-foreground">{w.desc}</p>
@@ -478,7 +455,7 @@ function HomePage() {
         <div className="container-page grid gap-10 lg:grid-cols-3">
           <div>
             <div className="inline-flex items-center gap-2 text-xs font-bold text-primary uppercase">
-              <HelpCircle className="h-4 w-4" />
+              <HelpCircle className="h-4 w-4 shrink-0" />
               <span>الأسئلة الشائعة</span>
             </div>
             <h2 className="mt-2 text-3xl font-bold text-foreground">استفسارات تتكرر باستمرار</h2>
@@ -490,7 +467,7 @@ function HomePage() {
               className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-primary hover:text-primary/80 group"
             >
               عرض جميع الأسئلة
-              <ChevronLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" aria-hidden="true" />
+              <ChevronLeft className="h-4 w-4 shrink-0 transition-transform group-hover:-translate-x-1" aria-hidden="true" />
             </Link>
           </div>
 
@@ -522,7 +499,7 @@ function HomePage() {
                 className="inline-flex items-center gap-2.5 rounded-xl bg-background px-8 py-3.5 text-base font-bold text-primary shadow-lg transition-all hover:scale-105 active:scale-95"
               >
                 ابدأ تقديم الشكوى الآن
-                <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+                <ArrowLeft className="h-4 w-4 shrink-0" aria-hidden="true" />
               </a>
             </div>
           </div>
