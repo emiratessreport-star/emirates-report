@@ -1,38 +1,72 @@
 import type { ReactNode } from "react";
 
+// النطاق الأساسي لموقعك (استبدله برابط موقعك الحقيقي إذا اختلف)
+const SITE_URL = "https://www.emirates-report.com";
+// الصورة الافتراضية للمشاركة على منصات التواصل
+const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.jpg`;
+
 interface SeoProps {
   title: string;
   description: string;
   path: string;
   type?: "website" | "article";
   image?: string;
+  noindex?: boolean; // خيار لإخفاء الصفحة من جوجل عند الحاجة (مثل صفحة الشكر)
   jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>;
   breadcrumbs?: Array<{ name: string; path: string }>;
 }
 
-export function buildHead({ title, description, path, type = "website", image, jsonLd, breadcrumbs }: SeoProps) {
-  const meta = [
+export function buildHead({
+  title,
+  description,
+  path,
+  type = "website",
+  image,
+  noindex = false,
+  jsonLd,
+  breadcrumbs,
+}: SeoProps) {
+  // تحويل المسار النسبي إلى رابط كامل (Full URL) لضمان عمل الـ Open Graph بشكل صحيح
+  const fullUrl = `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
+  
+  // تحديد الصورة: إما الصورة الممررة للمكون أو الصورة الافتراضية للموقع
+  const ogImage = image
+    ? (image.startsWith("http") ? image : `${SITE_URL}${image.startsWith("/") ? image : `/${image}`}`)
+    : DEFAULT_OG_IMAGE;
+
+  const meta: Array<Record<string, string>> = [
     { title },
     { name: "description", content: description },
+    
+    // Open Graph Tags (واتساب، فيسبوك، لينكد إن)
     { property: "og:title", content: title },
     { property: "og:description", content: description },
     { property: "og:type", content: type },
-    { property: "og:url", content: path },
+    { property: "og:url", content: fullUrl },
+    { property: "og:image", content: ogImage },
+    { property: "og:site_name", content: "منصة التقرير الإماراتي" },
+
+    // Twitter / X Tags
     { name: "twitter:card", content: "summary_large_image" },
     { name: "twitter:title", content: title },
     { name: "twitter:description", content: description },
+    { name: "twitter:image", content: ogImage },
   ];
-  if (image) {
-    meta.push({ property: "og:image", content: image });
-    meta.push({ name: "twitter:image", content: image });
+
+  // منع محركات البحث من الفهرسة في حال تفعيل noindex (مثل صفحة thank-you)
+  if (noindex) {
+    meta.push({ name: "robots", content: "noindex, nofollow" });
   }
-  const links = [{ rel: "canonical", href: path }];
+
+  const links = [{ rel: "canonical", href: fullUrl }];
   const scripts: Array<{ type: string; children: string }> = [];
   const schemas: Array<Record<string, unknown>> = [];
+
   if (jsonLd) {
     if (Array.isArray(jsonLd)) schemas.push(...jsonLd);
     else schemas.push(jsonLd);
   }
+
   if (breadcrumbs && breadcrumbs.length) {
     schemas.push({
       "@context": "https://schema.org",
@@ -41,13 +75,15 @@ export function buildHead({ title, description, path, type = "website", image, j
         "@type": "ListItem",
         position: i + 1,
         name: b.name,
-        item: b.path,
+        item: `${SITE_URL}${b.path.startsWith("/") ? b.path : `/${b.path}`}`,
       })),
     });
   }
+
   for (const s of schemas) {
     scripts.push({ type: "application/ld+json", children: JSON.stringify(s) });
   }
+
   return { meta, links, scripts };
 }
 
