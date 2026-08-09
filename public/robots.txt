@@ -1,2 +1,5 @@
 User-agent: *
 Allow: /
+
+# رابط خريطة الموقع الرسمية
+Sitemap: https://www.emirates-report.com/sitemap.xml
