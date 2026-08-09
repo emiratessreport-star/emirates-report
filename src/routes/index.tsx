@@ -97,81 +97,77 @@ const whyUs: FeatureItem[] = [
 ];
 
 /* ==========================================================================
-   TanStack Router Route Definition
+   TanStack Router Route Definition (Home Page - /)
    ========================================================================== */
 export const Route = createFileRoute("/")({
   head: () =>
     buildHead({
-      title: "تقديم شكوى حماية المستهلك الإمارات | المنصة الرقمية الموحدة للشكاوى التجارية",
+      // 1. عنوان فريد وجذاب يستهدف أهم الكلمات المفتاحية في الإمارات
+      title: "منصة التقرير الإماراتي | تقديم وتوثيق شكاوى المستهلك ضد الشركات الخاصة",
+
+      // 2. وصف تسويقي ومحسّن لجوجل يرفع نسبة النقر (CTR)
       description:
-        "هل واجهت مشكلة تجارية أو احتيالاً؟ قدم شكواك الرسمية الآن عبر المنصة المعتمدة لتوثيق ومتابعة شكاوى المستهلكين ضد المنشآت والشركات الخاصة في الإمارات.",
+        "هل واجهت مشكلة تجارية؟ قدّم شكواك ورسالتك الآن عبر منصة التقرير الإماراتي لتوثيق ومتابعة شكاوى المستهلكين ضد المنشآت والشركات الخاصة في الإمارات بسهولة وشفافية.",
+
       path: "/",
+
+      // 3. منظومة Schema المتقدمة والمحدثة بالدومين والاسم الرسمي
       jsonLd: [
         {
           "@context": "https://schema.org",
           "@type": "WebSite",
-          "name": "منصة توثيق الشكاوى التجارية الإمارات",
-          "alternateName": "حماية المستهلك الإمارات",
-          "inLanguage": "ar",
-          "url": "https://your-domain.ae",
-          "potentialAction": {
-            "@type": "SearchAction",
-            "target": "https://your-domain.ae/search?q={search_term_string}",
-            "query-input": "required name=search_term_string",
-          },
+          name: "منصة التقرير الإماراتي",
+          alternateName: "التقرير الإماراتي لخدمة المستهلك",
+          inLanguage: "ar",
+          url: "https://www.emirates-report.com",
         },
         {
           "@context": "https://schema.org",
           "@type": "Organization",
-          "name": "المنظومة الرقمية لتوثيق شكاوى المستهلك - الإمارات",
-          "url": "https://your-domain.ae",
-          "logo": "https://your-domain.ae/logo.png",
-          "address": {
+          name: "منصة التقرير الإماراتي المستقلة",
+          url: "https://www.emirates-report.com",
+          logo: "https://www.emirates-report.com/logo.png",
+          address: {
             "@type": "PostalAddress",
-            "addressCountry": "AE",
-            "addressRegion": "Dubai / Abu Dhabi",
+            addressCountry: "AE",
+            addressRegion: "Dubai / Abu Dhabi",
           },
         },
         {
           "@context": "https://schema.org",
           "@type": "Service",
-          "serviceType": "توثيق وتسوية شكاوى المستهلكين",
-          "provider": {
+          serviceType: "توثيق ومتابعة شكاوى المستهلكين",
+          provider: {
             "@type": "Organization",
-            "name": "منصة حماية المستهلك الإمارات",
+            name: "منصة التقرير الإماراتي",
           },
-          "areaServed": {
+          areaServed: {
             "@type": "Country",
-            "name": "United Arab Emirates",
+            name: "United Arab Emirates",
           },
-          "hasOfferCatalog": {
+          hasOfferCatalog: {
             "@type": "OfferCatalog",
-            "name": "خدمات حماية المستهلك والحلول التجارية",
-            "itemListElement": [
+            name: "خدمات توثيق الشكاوى التجاريّة",
+            itemListElement: [
               {
                 "@type": "Offer",
-                "itemOffered": {
+                itemOffered: {
                   "@type": "Service",
-                  "name": "تقديم وتوثيق الشكاوى التجارية",
+                  name: "تقديم وتوثيق الشكاوى التجارية ضد الشركات الخاصة",
                 },
               },
             ],
-          },
-          "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.9",
-            "reviewCount": "1420",
           },
         },
         {
           "@context": "https://schema.org",
           "@type": "FAQPage",
-          "mainEntity": faqPreview.map((item) => ({
+          mainEntity: faqPreview.map((item) => ({
             "@type": "Question",
-            "name": item.q,
-            "acceptedAnswer": {
+            name: item.q,
+            acceptedAnswer: {
               "@type": "Answer",
-              "text": item.a,
+              text: item.a,
             },
           })),
         },
@@ -179,7 +175,6 @@ export const Route = createFileRoute("/")({
     }),
   component: HomePage,
 });
-
 /* ==========================================================================
    Hero Section Component
    ========================================================================== */

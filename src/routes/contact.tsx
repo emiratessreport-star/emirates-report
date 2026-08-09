@@ -5,9 +5,9 @@ import { buildHead, PageHeader } from "@/components/site/seo";
 export const Route = createFileRoute("/contact")({
   head: () =>
     buildHead({
-      title: "تواصل معنا | منصة الشكاوى المستقلة",
+      title: "تواصل معنا | منصة التقرير الإماراتي لخدمة المستهلك",
       description:
-        "تواصل مع فريق منصة الشكاوى المستقلة عبر البريد الإلكتروني. نرد خلال 24 ساعة عمل.",
+        "تواصل مع فريق الدعم الفني لـ منصة التقرير الإماراتي المستقلة عبر البريد الإلكتروني. نرد على استفساراتكم وملاحظاتكم خلال 24 ساعة عمل.",
       path: "/contact",
       breadcrumbs: [
         { name: "الرئيسية", path: "/" },

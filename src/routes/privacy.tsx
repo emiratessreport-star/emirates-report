@@ -4,10 +4,16 @@ import { buildHead, PageHeader } from "@/components/site/seo";
 export const Route = createFileRoute("/privacy")({
   head: () =>
     buildHead({
-      title: "سياسة الخصوصية | منصة الشكاوى المستقلة",
+      // 1. عنوان واضح ومباشر مرتبط باسم المنصة
+      title: "سياسة الخصوصية | منصة التقرير الإماراتي",
+
+      // 2. وصف دقيق وشامل لنتائج البحث
       description:
-        "تعرّف على كيفية جمع منصة الشكاوى المستقلة لبياناتك، استخدامها، وحمايتها، وحقوقك كمستخدم.",
+        "تعرّف على سياسة الخصوصية وحماية البيانات في منصة التقرير الإماراتي: آلية جمع واستخدام وحماية بيانات المستخدمين وحقوق الخصوصية الخاصة بك.",
+
       path: "/privacy",
+
+      // 3. مسار التنقل لـ Breadcrumbs
       breadcrumbs: [
         { name: "الرئيسية", path: "/" },
         { name: "سياسة الخصوصية", path: "/privacy" },
@@ -15,6 +21,8 @@ export const Route = createFileRoute("/privacy")({
     }),
   component: PrivacyPage,
 });
+
+const CONTACT_EMAIL = "moetshakawi-uae@gmail.com";
 
 function PrivacyPage() {
   return (
@@ -73,8 +81,8 @@ function PrivacyPage() {
         </ul>
         <p className="mt-3 text-muted-foreground">
           لممارسة أي من هذه الحقوق راسلنا على{" "}
-          <a href="mailto:privacy@uae-complaints.example" className="text-primary underline">
-            privacy@uae-complaints.example
+          <a href={`mailto:${CONTACT_EMAIL}`} className="text-primary underline" dir="ltr">
+            {CONTACT_EMAIL}
           </a>
           .
         </p>

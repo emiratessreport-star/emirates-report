@@ -1,22 +1,45 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { FileText, Search, Send, Bell, ArrowLeft } from "lucide-react";
 import { buildHead, PageHeader } from "@/components/site/seo";
-
 export const Route = createFileRoute("/how-it-works")({
   head: () =>
     buildHead({
-      title: "كيف تعمل المنصة | منصة الشكاوى المستقلة",
+      // 1. عنوان محسن يربط طريقة العمل باسم المنصة
+      title: "كيف تعمل المنصة | منصة التقرير الإماراتي لخدمة المستهلك",
+
+      // 2. وصف جذاب ومحدد يتضمن المراحل الأساسية للخدمة
       description:
-        "شرح تفصيلي لطريقة عمل منصة الشكاوى المستقلة: من تعبئة النموذج إلى استلام الرد من الشركة المعنية.",
+        "تعرف على كيفية تقديم وتوثيق الشكاوى عبر منصة التقرير الإماراتي خطوة بخطوة: من تعبئة النموذج وحتى متابعة الرد واستلام الإشعارات.",
+
       path: "/how-it-works",
+
+      // 3. مسار التنقل لـ Breadcrumbs
       breadcrumbs: [
         { name: "الرئيسية", path: "/" },
         { name: "كيف تعمل المنصة", path: "/how-it-works" },
       ],
+
+      // 4. إضافة Schema من نوع HowTo لإظهار الخطوات بوضوح لمُحركات البحث
+      jsonLd: {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        name: "طريقة تقديم وتوثيق شكوى عبر منصة التقرير الإماراتي",
+        description: "خطوات بسيطة وشفافة لتقديم شكوى ضد الشركات الخاصة في الإمارات.",
+        step: steps.map((s, index) => ({
+          "@type": "HowToStep",
+          position: index + 1,
+          name: s.title,
+          itemListElement: [
+            {
+              "@type": "HowToDirection",
+              text: s.desc,
+            },
+          ],
+        })),
+      },
     }),
   component: HowItWorksPage,
 });
-
 const steps = [
   {
     icon: FileText,
