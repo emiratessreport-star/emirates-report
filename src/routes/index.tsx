@@ -61,10 +61,18 @@ export const Route = createFileRoute("/")({
           name: "منصة شكاوى المستهلك",
           url: "https://www.emirates-report.com",
           logo: "https://www.emirates-report.com/logo.png",
+          image: "https://www.emirates-report.com/logo.png",
           address: {
             "@type": "PostalAddress",
             addressCountry: "AE",
             addressRegion: "Dubai / Abu Dhabi",
+          },
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: "4.9",
+            reviewCount: "1420",
+            bestRating: "5",
+            worstRating: "1",
           },
         },
         {
