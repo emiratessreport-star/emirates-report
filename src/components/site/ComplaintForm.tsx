@@ -159,6 +159,14 @@ export function ComplaintForm() {
     e.preventDefault();
     if (submittingRef.current) return;
 
+    // 🚀 إرسال حدث النقر/محاولة الإرسال لـ GTM
+    if (typeof window !== "undefined" && (window as any).dataLayer) {
+      (window as any).dataLayer.push({
+        event: "submit_complaint_click",
+        form_name: "consumer_complaint_form",
+      });
+    }
+
     const parsed = schema.safeParse({ ...values, website: values.website ?? "" });
     if (!parsed.success) {
       const errs: Errors = {};
@@ -210,6 +218,15 @@ export function ComplaintForm() {
           referrer: document.referrer ?? "",
         },
       });
+
+      // 🎉 إرسال حدث نجاح الإرسال الفعلي لـ GTM
+      if (typeof window !== "undefined" && (window as any).dataLayer) {
+        (window as any).dataLayer.push({
+          event: "complaint_submitted",
+          form_name: "consumer_complaint",
+        });
+      }
+
       navigate({ to: "/thank-you" });
     } catch (err) {
       console.error(err);
@@ -483,7 +500,6 @@ const inputBase =
 /* دالة ألوان حقول المدخلات */
 function inputClsFor(state: "error" | "valid" | "idle") {
   if (state === "error") {
-    // إطار أحمر صريح وخلفية ذات تمويه أحمر خفيف عند الخطأ
     return `${inputBase} border-red-600 bg-red-50/20 text-red-950 focus:border-red-600 focus:ring-red-500/30`;
   }
   if (state === "valid") {
