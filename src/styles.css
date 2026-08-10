@@ -1,15 +1,14 @@
 @import "tailwindcss";
 
 /* ==========================================================================
-   Local Font Declarations (Tajawal Self-Hosted - Optimized for Fast LCP)
+   Local Font Declarations (Tajawal Self-Hosted - Updated with exact filenames)
    ========================================================================== */
 @font-face {
   font-family: 'Tajawal';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('/fonts/tajawal-v9-arabic-400.woff2') format('woff2');
-  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
+  src: url('/fonts/tajawal-v12-latin-regular.woff2') format('woff2');
 }
 
 @font-face {
@@ -17,8 +16,7 @@
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url('/fonts/tajawal-v9-arabic-500.woff2') format('woff2');
-  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
+  src: url('/fonts/tajawal-v12-latin-500.woff2') format('woff2');
 }
 
 @font-face {
@@ -26,8 +24,7 @@
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url('/fonts/tajawal-v9-arabic-700.woff2') format('woff2');
-  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
+  src: url('/fonts/tajawal-v12-latin-700.woff2') format('woff2');
 }
 
 @theme {

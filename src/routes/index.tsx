@@ -40,8 +40,8 @@ const GA_MEASUREMENT_ID = "G-CM4MQBXFP4";
    TanStack Router Route Definition (Home Page - /)
    ========================================================================== */
 export const Route = createFileRoute("/")({
-  head: () =>
-    buildHead({
+  head: () => {
+    const baseHead = buildHead({
       title: "منصة شكاوى المستهلك | تقديم وتوثيق شكاوى المستهلك ضد الشركات الخاصة",
       description:
         "هل واجهت مشكلة تجارية؟ قدّم شكواك ورسالتك الآن عبر منصة شكاوى المستهلك لتوثيق ومتابعة شكاوى المستهلكين ضد المنشآت والشركات الخاصة في الإمارات بسهولة وشفافية.",
@@ -116,7 +116,30 @@ export const Route = createFileRoute("/")({
           })),
         },
       ],
-    }),
+    });
+
+    // إضافة Preload للخطوط المحلية لمنع حظر العرض وتسريع FCP
+    return {
+      ...baseHead,
+      links: [
+        ...(baseHead.links || []),
+        {
+          rel: "preload",
+          href: "/fonts/tajawal-v12-latin-regular.woff2",
+          as: "font",
+          type: "font/woff2",
+          crossOrigin: "anonymous",
+        },
+        {
+          rel: "preload",
+          href: "/fonts/tajawal-v12-latin-700.woff2",
+          as: "font",
+          type: "font/woff2",
+          crossOrigin: "anonymous",
+        },
+      ],
+    };
+  },
   component: HomePage,
 });
 
