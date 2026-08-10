@@ -25,16 +25,15 @@ const CtaSection = lazy(() =>
 );
 
 /* ==========================================================================
-   Google Analytics Window Interface Augmentation
+   Google Tag Manager Window Interface Augmentation (طابقنا النوع مع __root.tsx)
    ========================================================================== */
 declare global {
   interface Window {
-    gtag?: (...args: unknown[]) => void;
     dataLayer?: unknown[];
   }
 }
 
-const GA_MEASUREMENT_ID = "G-CM4MQBXFP4";
+const GTM_ID = "GTM-TDG4747L";
 
 /* ==========================================================================
    TanStack Router Route Definition (Home Page - /)
@@ -118,7 +117,6 @@ export const Route = createFileRoute("/")({
       ],
     });
 
-    // إضافة Preload للخطوط المحلية لمنع حظر العرض وتسريع FCP
     return {
       ...baseHead,
       links: [
@@ -138,6 +136,22 @@ export const Route = createFileRoute("/")({
           crossOrigin: "anonymous",
         },
       ],
+      scripts: [
+        ...(baseHead.scripts || []),
+        {
+          children: `
+            window.addEventListener('DOMContentLoaded', function() {
+              setTimeout(function() {
+                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                })(window,document,'script','dataLayer','${GTM_ID}');
+              }, 1500);
+            });
+          `,
+        },
+      ],
     };
   },
   component: HomePage,
@@ -149,16 +163,15 @@ export const Route = createFileRoute("/")({
 function HomePage() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
-  // دالة فائقة الأداء للتمرير الانسيابي والتركيز (مُحسّنة خفيفة لتقليل TBT)
+  // دالة للتمرير الانسيابي والتركيز
   const scrollToForm = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    
-    // تنفيذ التمرير في الإطار التزامني القادم لتجنب حظر المعالج الرئيسي (TBT Optimization)
+
     requestAnimationFrame(() => {
       const el = document.getElementById("complaint-form");
       if (el) {
         el.scrollIntoView({ behavior: "smooth", block: "start" });
-        
+
         const firstInput = el.querySelector<HTMLElement>(
           "input:not([type='hidden']), select, textarea"
         );
@@ -169,29 +182,36 @@ function HomePage() {
     });
   }, []);
 
-  // تتبع تنقلات الشاشة عبر Google Analytics بدون حظر العرض الرئيسي
+  // تتبع تنقلات الشاشة عبر Google Tag Manager
   useEffect(() => {
     if (typeof window !== "undefined") {
-      if (typeof window.gtag === "function") {
-        window.gtag("config", GA_MEASUREMENT_ID, {
-          page_path: pathname,
-        });
-      } else if (window.dataLayer) {
-        window.dataLayer.push({
-          event: "pageview",
-          page_path: pathname,
-        });
-      }
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "page_view",
+        page_path: pathname,
+        page_location: window.location.href,
+        page_title: document.title,
+      });
     }
   }, [pathname]);
 
   return (
     <>
+      {/* Google Tag Manager (noscript) - كود البودي */}
+      <noscript>
+        <iframe
+          src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+          height="0"
+          width="0"
+          style={{ display: "none", visibility: "hidden" }}
+        />
+      </noscript>
+
       {/* الأقسام الهامة فوراً لتحقيق أقصى سرعة LCP */}
       <HeroSection onPrimaryClick={scrollToForm} />
       <ComplaintFormSection />
 
-      {/* الأقسام الثانوية عبر Suspense لتقليل أحجم البرمجيات المحملة مبدئياً */}
+      {/* الأقسام الثانوية عبر Suspense */}
       <Suspense fallback={<div className="min-h-[200px]" />}>
         <CategoriesSection />
         <HowItWorksSection />
