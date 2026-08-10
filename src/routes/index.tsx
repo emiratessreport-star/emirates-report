@@ -104,27 +104,39 @@ export const Route = createFileRoute("/")({
 function HomePage() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
-  // دالة للتمرير الانسيابي والتركيز على نموذج الشكوى
+  // دالة فائقة الأداء للتمرير الانسيابي والتركيز (مُحسّنة خفيفة لتقليل TBT)
   const scrollToForm = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    const el = document.getElementById("complaint-form");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-      const firstInput = el.querySelector<HTMLElement>(
-        "input:not([type='hidden']), select, textarea"
-      );
-      if (firstInput) {
-        setTimeout(() => firstInput.focus({ preventScroll: true }), 400);
+    
+    // تنفيذ التمرير في الإطار التزامني القادم لتجنب حظر المعالج الرئيسي (TBT Optimization)
+    requestAnimationFrame(() => {
+      const el = document.getElementById("complaint-form");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+        
+        const firstInput = el.querySelector<HTMLElement>(
+          "input:not([type='hidden']), select, textarea"
+        );
+        if (firstInput) {
+          setTimeout(() => firstInput.focus({ preventScroll: true }), 350);
+        }
       }
-    }
+    });
   }, []);
 
-  // تتبع تنقلات الشاشة عبر Google Analytics بشكل آمن
+  // تتبع تنقلات الشاشة عبر Google Analytics بدون حظر العرض الرئيسي
   useEffect(() => {
-    if (typeof window !== "undefined" && typeof window.gtag === "function") {
-      window.gtag("config", GA_MEASUREMENT_ID, {
-        page_path: pathname,
-      });
+    if (typeof window !== "undefined") {
+      if (typeof window.gtag === "function") {
+        window.gtag("config", GA_MEASUREMENT_ID, {
+          page_path: pathname,
+        });
+      } else if (window.dataLayer) {
+        window.dataLayer.push({
+          event: "pageview",
+          page_path: pathname,
+        });
+      }
     }
   }, [pathname]);
 
