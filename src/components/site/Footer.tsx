@@ -5,10 +5,10 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="mt-20 border-t border-border bg-secondary/40">
+    <footer className="mt-20 border-t border-border bg-slate-100/90">
       <div className="container-page grid gap-10 py-12 md:grid-cols-4">
         <div className="md:col-span-2">
-          <Link to="/" className="inline-flex items-center gap-2.5 font-display font-bold text-primary">
+          <Link to="/" className="inline-flex items-center gap-2.5 font-display font-bold text-slate-900">
             <img 
               src="/logo.svg" 
               alt="شعار منصة شكاوى المستهلك" 
@@ -17,45 +17,45 @@ export function Footer() {
               className="h-10 w-auto shrink-0" 
               loading="lazy"
             />
-            <span className="text-lg text-foreground font-extrabold">منصة شكاوى المستهلك</span>
+            <span className="text-lg text-slate-950 font-extrabold">منصة شكاوى المستهلك</span>
           </Link>
-          <p className="mt-4 max-w-md text-xs leading-6 text-muted-foreground">
+          <p className="mt-4 max-w-md text-xs leading-6 text-slate-700 font-medium">
             منصة مستقلة تساعد المستهلكين في الإمارات على توثيق شكاواهم تجاه الشركات
             الخاصة ومتابعتها. المنصة غير تابعة لأي جهة حكومية ولا تمثلها بأي شكل.
           </p>
         </div>
 
         <nav aria-label="روابط سريعة">
-          <h3 className="text-sm font-bold text-foreground">روابط سريعة</h3>
-          <ul className="mt-4 space-y-2.5 text-xs text-muted-foreground">
-            <li><Link to="/about" className="transition-colors hover:text-primary">من نحن</Link></li>
-            <li><Link to="/how-it-works" className="transition-colors hover:text-primary">كيف تعمل المنصة</Link></li>
-            <li><Link to="/faq" className="transition-colors hover:text-primary">الأسئلة الشائعة</Link></li>
-            <li><Link to="/contact" className="transition-colors hover:text-primary">تواصل معنا</Link></li>
+          <h3 className="text-sm font-bold text-slate-950">روابط سريعة</h3>
+          <ul className="mt-4 space-y-2.5 text-xs text-slate-700 font-medium">
+            <li><Link to="/about" className="transition-colors hover:text-amber-700 focus-visible:text-amber-700">من نحن</Link></li>
+            <li><Link to="/how-it-works" className="transition-colors hover:text-amber-700 focus-visible:text-amber-700">كيف تعمل المنصة</Link></li>
+            <li><Link to="/faq" className="transition-colors hover:text-amber-700 focus-visible:text-amber-700">الأسئلة الشائعة</Link></li>
+            <li><Link to="/contact" className="transition-colors hover:text-amber-700 focus-visible:text-amber-700">تواصل معنا</Link></li>
           </ul>
         </nav>
 
         <nav aria-label="روابط قانونية">
-          <h3 className="text-sm font-bold text-foreground">قانوني</h3>
-          <ul className="mt-4 space-y-2.5 text-xs text-muted-foreground">
-            <li><Link to="/privacy" className="transition-colors hover:text-primary">سياسة الخصوصية</Link></li>
-            <li><Link to="/terms" className="transition-colors hover:text-primary">الشروط والأحكام</Link></li>
+          <h3 className="text-sm font-bold text-slate-950">قانوني</h3>
+          <ul className="mt-4 space-y-2.5 text-xs text-slate-700 font-medium">
+            <li><Link to="/privacy" className="transition-colors hover:text-amber-700 focus-visible:text-amber-700">سياسة الخصوصية</Link></li>
+            <li><Link to="/terms" className="transition-colors hover:text-amber-700 focus-visible:text-amber-700">الشروط والأحكام</Link></li>
             <li>
               <a 
                 href="mailto:moetshakawi-uae@gmail.com" 
-                className="inline-flex items-center gap-2 transition-colors hover:text-primary" 
+                className="inline-flex items-center gap-2 transition-colors hover:text-amber-700 focus-visible:text-amber-700" 
                 dir="ltr"
               >
-                <Mail className="h-4 w-4 shrink-0" aria-hidden="true" />
-                <span>moetshakawi-uae@gmail.com</span>
+                <Mail className="h-4 w-4 shrink-0 text-slate-800" aria-hidden="true" />
+                <span className="font-semibold text-slate-800">moetshakawi-uae@gmail.com</span>
               </a>
             </li>
           </ul>
         </nav>
       </div>
 
-      <div className="border-t border-border/70 bg-background/50">
-        <div className="container-page flex flex-col items-center justify-between gap-3 py-4 text-[11px] text-muted-foreground md:flex-row">
+      <div className="border-t border-slate-200 bg-slate-200/60">
+        <div className="container-page flex flex-col items-center justify-between gap-3 py-4 text-xs font-medium text-slate-700 md:flex-row">
           <p>© {currentYear} منصة شكاوى المستهلك المستقلة. جميع الحقوق محفوظة.</p>
           <p className="text-center md:text-right">منصة مستقلة — ليست جهة حكومية ولا تمثل أي جهة رسمية في الإمارات.</p>
         </div>

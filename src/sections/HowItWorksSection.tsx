@@ -27,7 +27,7 @@ export function HowItWorksSection() {
               key={s.n}
               className="relative rounded-2xl border border-border bg-card p-6 shadow-xs transition-all hover:border-primary/30"
             >
-              <span className="font-mono text-4xl font-black text-primary/15 absolute top-4 left-5 select-none">
+              <span className="font-mono text-4xl font-black text-primary/40 absolute top-4 left-5 select-none">
                 {s.n}
               </span>
               <h3 className="mt-4 text-base font-bold text-foreground relative z-10">{s.title}</h3>

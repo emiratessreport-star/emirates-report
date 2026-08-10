@@ -1,10 +1,30 @@
 @import "tailwindcss";
 
 /* ==========================================================================
-   Font Display Strategy (تسريع تحميل النص وإلغاء فترة FOIT)
+   Local Font Declarations (Tajawal Self-Hosted)
    ========================================================================== */
 @font-face {
+  font-family: 'Tajawal';
+  font-style: normal;
+  font-weight: 400;
   font-display: swap;
+  src: url('/fonts/tajawal-v9-arabic-400.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Tajawal';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/tajawal-v9-arabic-500.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Tajawal';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/tajawal-v9-arabic-700.woff2') format('woff2');
 }
 
 @theme {
@@ -59,7 +79,6 @@
 
   html {
     scroll-behavior: smooth;
-    font-display: swap; /* يضمن إظهار النص فوراً بالخط البديل لحين استكمال التحميل */
   }
 
   body {

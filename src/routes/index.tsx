@@ -1,5 +1,5 @@
 import { createFileRoute, useRouterState } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { buildHead } from "@/components/site/seo";
 
 import { HeroSection } from "@/sections/HeroSection";
@@ -99,27 +99,29 @@ export const Route = createFileRoute("/")({
 });
 
 /* ==========================================================================
-   Smooth Scroll Helper Function
-   ========================================================================== */
-function scrollToForm(e: React.MouseEvent<HTMLAnchorElement>) {
-  e.preventDefault();
-  const el = document.getElementById("complaint-form");
-  if (el) {
-    el.scrollIntoView({ behavior: "smooth", block: "start" });
-    const firstInput = el.querySelector<HTMLElement>("input, select, textarea");
-    setTimeout(() => firstInput?.focus({ preventScroll: true }), 500);
-  }
-}
-
-/* ==========================================================================
    Main HomePage Component
    ========================================================================== */
 function HomePage() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
-  // تتبع تنقلات الشاشة عبر Google Analytics
+  // دالة للتمرير الانسيابي والتركيز على نموذج الشكوى
+  const scrollToForm = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const el = document.getElementById("complaint-form");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      const firstInput = el.querySelector<HTMLElement>(
+        "input:not([type='hidden']), select, textarea"
+      );
+      if (firstInput) {
+        setTimeout(() => firstInput.focus({ preventScroll: true }), 400);
+      }
+    }
+  }, []);
+
+  // تتبع تنقلات الشاشة عبر Google Analytics بشكل آمن
   useEffect(() => {
-    if (typeof window !== "undefined" && window.gtag) {
+    if (typeof window !== "undefined" && typeof window.gtag === "function") {
       window.gtag("config", GA_MEASUREMENT_ID, {
         page_path: pathname,
       });
