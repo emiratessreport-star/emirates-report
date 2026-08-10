@@ -12,4 +12,25 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  vite: {
+    build: {
+      minify: "esbuild",
+      cssMinify: true,
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes("node_modules/react") || id.includes("node_modules/react-dom")) {
+              return "react-vendor";
+            }
+            if (id.includes("node_modules/lucide-react")) {
+              return "icons-vendor";
+            }
+            if (id.includes("node_modules/@tanstack")) {
+              return "tanstack-vendor";
+            }
+          },
+        },
+      },
+    },
+  },
 });

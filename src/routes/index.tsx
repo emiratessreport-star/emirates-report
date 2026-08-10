@@ -1,14 +1,28 @@
 import { createFileRoute, useRouterState } from "@tanstack/react-router";
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, lazy, Suspense } from "react";
 import { buildHead } from "@/components/site/seo";
 
+// تحسين LCP: تحميل القسم الأول ونموذج الشكوى فوراً
 import { HeroSection } from "@/sections/HeroSection";
 import { ComplaintFormSection } from "@/sections/ComplaintFormSection";
-import { CategoriesSection } from "@/sections/CategoriesSection";
-import { HowItWorksSection } from "@/sections/HowItWorksSection";
-import { WhyUsSection } from "@/sections/WhyUsSection";
-import { FaqSection, faqPreview } from "@/sections/FaqSection";
-import { CtaSection } from "@/sections/CtaSection";
+import { faqPreview } from "@/sections/FaqSection";
+
+// تحسين TBT و Unused JS: تحميل باقي الأقسام كسولياً (Lazy Loading)
+const CategoriesSection = lazy(() =>
+  import("@/sections/CategoriesSection").then((m) => ({ default: m.CategoriesSection }))
+);
+const HowItWorksSection = lazy(() =>
+  import("@/sections/HowItWorksSection").then((m) => ({ default: m.HowItWorksSection }))
+);
+const WhyUsSection = lazy(() =>
+  import("@/sections/WhyUsSection").then((m) => ({ default: m.WhyUsSection }))
+);
+const FaqSection = lazy(() =>
+  import("@/sections/FaqSection").then((m) => ({ default: m.FaqSection }))
+);
+const CtaSection = lazy(() =>
+  import("@/sections/CtaSection").then((m) => ({ default: m.CtaSection }))
+);
 
 /* ==========================================================================
    Google Analytics Window Interface Augmentation
@@ -142,13 +156,18 @@ function HomePage() {
 
   return (
     <>
+      {/* الأقسام الهامة فوراً لتحقيق أقصى سرعة LCP */}
       <HeroSection onPrimaryClick={scrollToForm} />
       <ComplaintFormSection />
-      <CategoriesSection />
-      <HowItWorksSection />
-      <WhyUsSection onPrimaryClick={scrollToForm} />
-      <FaqSection />
-      <CtaSection onPrimaryClick={scrollToForm} />
+
+      {/* الأقسام الثانوية عبر Suspense لتقليل أحجم البرمجيات المحملة مبدئياً */}
+      <Suspense fallback={<div className="min-h-[200px]" />}>
+        <CategoriesSection />
+        <HowItWorksSection />
+        <WhyUsSection onPrimaryClick={scrollToForm} />
+        <FaqSection />
+        <CtaSection onPrimaryClick={scrollToForm} />
+      </Suspense>
     </>
   );
 }
